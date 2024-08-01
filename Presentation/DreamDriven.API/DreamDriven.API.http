@@ -1,0 +1,6 @@
+@DreamDriven.API_HostAddress = http://localhost:5294
+
+GET {{DreamDriven.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
