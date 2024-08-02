@@ -1,3 +1,4 @@
+using DreamDriven.Application;
 using DreamDriven.Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Configuration
 
 
 builder.Services.AddPersistance(builder.Configuration);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 

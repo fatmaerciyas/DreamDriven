@@ -13,11 +13,11 @@ namespace DreamDriven.Application.Repositories
             bool enableTracking = false
             );
 
-        Task<IList<T>> GetAsync(Expression<Func<T, bool>> predicate,
+        Task<T> GetAsync(Expression<Func<T, bool>> predicate,
           Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
           bool enableTracking = true);
 
-        IQueryable<T> Find(Expression<Func<T, bool>> predicate);
+        IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool enableTracking = false);
 
         Task<int> CountAsync(Expression<Func<T, bool>>? predicate);
 

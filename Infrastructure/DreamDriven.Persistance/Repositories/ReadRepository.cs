@@ -17,14 +17,18 @@ namespace DreamDriven.Persistance.Repositories
 
         private DbSet<T> _entities { get => dbContext.Set<T>(); }
 
-        public Task<int> CountAsync(Expression<Func<T, bool>>? predicate)
+        public async Task<int> CountAsync(Expression<Func<T, bool>>? predicate)
         {
-            throw new NotImplementedException();
+            _entities.AsNoTracking();
+            if ( predicate is not null ) _entities.Where(predicate);
+
+            return await _entities.CountAsync();
         }
 
-        public IQueryable<T> Find(Expression<Func<T, bool>> predicate)
+        public IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool enableTracking = false)
         {
-            throw new NotImplementedException();
+            if ( !enableTracking ) _entities.AsNoTracking();
+            return _entities.Where(predicate);
         }
 
         public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool enableTracking = false)
@@ -38,9 +42,14 @@ namespace DreamDriven.Persistance.Repositories
             return await query.ToListAsync();
         }
 
-        public Task<IList<T>> GetAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, bool enableTracking = true)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, bool enableTracking = true)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = _entities;
+            if ( !enableTracking ) query = query.AsNoTracking();
+            if ( include is not null ) query = include(query);
+            //query.Where(predicate);
+
+            return await query.FirstOrDefaultAsync(predicate);
         }
     }
 }
