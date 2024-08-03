@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DreamDriven.Application.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace DreamDriven.Application
@@ -10,6 +11,8 @@ namespace DreamDriven.Application
         public static void AddApplication(this IServiceCollection services)
         {
             var assembly = Assembly.GetExecutingAssembly();
+
+            services.AddTransient<ExceptionMiddleware>();
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
         }

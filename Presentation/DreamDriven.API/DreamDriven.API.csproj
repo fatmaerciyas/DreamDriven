@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\DreamDriven.Mapper\DreamDriven.Mapper.csproj" />
     <ProjectReference Include="..\..\Infrastructure\DreamDriven.Persistance\DreamDriven.Persistance.csproj" />
   </ItemGroup>
 

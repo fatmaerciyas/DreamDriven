@@ -30,7 +30,10 @@ namespace DreamDriven.Persistance.Repositories
             await Task.Run(() => _entities.Remove(entity));
         }
 
-
+        public async Task HardDeleteRangeAsync(IList<T> entities)
+        {
+            await Task.Run(() => _entities.RemoveRange(entities));
+        }
 
         public async Task<T> UpdateAsync(T entity)
         {

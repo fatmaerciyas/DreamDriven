@@ -6,5 +6,8 @@
     {
         public string Name { get; set; }
 
+        //iliskili
+        //public BrandDto Brand  { get; set; }
+
     }
 }

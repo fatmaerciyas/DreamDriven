@@ -8,7 +8,7 @@ namespace DreamDriven.Domain.Entities
         public string Description { get; set; } // Görsel açıklaması
 
         // Categories
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<CategoryVisual> CategoryVisuals { get; set; }
 
         // User
         public Guid? UserId { get; set; } // Nullable in case some visuals are not user-specific
