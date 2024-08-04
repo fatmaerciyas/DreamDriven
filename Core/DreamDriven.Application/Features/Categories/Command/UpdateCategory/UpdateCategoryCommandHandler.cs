@@ -5,7 +5,7 @@ using MediatR;
 
 namespace DreamDriven.Application.Features.Categories.Command.UpdateCategory
 {
-    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommandRequest>
+    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommandRequest, Unit>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -16,7 +16,7 @@ namespace DreamDriven.Application.Features.Categories.Command.UpdateCategory
             this.mapper = mapper;
         }
 
-        public async Task Handle(UpdateCategoryCommandRequest request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateCategoryCommandRequest request, CancellationToken cancellationToken)
         {
             var category = await unitOfWork.GetReadRepository<Category>().GetAsync(x => x.Id == request.Id && !x.IsDeleted);
 
@@ -30,6 +30,8 @@ namespace DreamDriven.Application.Features.Categories.Command.UpdateCategory
 
             await unitOfWork.GetWriteRepository<Category>().UpdateAsync(map);
             await unitOfWork.SaveAsync();
+
+            return Unit.Value;
         }
     }
 }

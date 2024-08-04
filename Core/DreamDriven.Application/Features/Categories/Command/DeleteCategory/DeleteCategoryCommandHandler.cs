@@ -5,7 +5,7 @@ using MediatR;
 
 namespace DreamDriven.Application.Features.Categories.Command.DeleteCategory
 {
-    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommandRequest>
+    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommandRequest, Unit>
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -14,7 +14,7 @@ namespace DreamDriven.Application.Features.Categories.Command.DeleteCategory
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(DeleteCategoryCommandRequest request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteCategoryCommandRequest request, CancellationToken cancellationToken)
         {
             var category = await unitOfWork.GetReadRepository<Category>().GetAsync(x => x.Id == request.Id && !x.IsDeleted);
 
@@ -23,6 +23,8 @@ namespace DreamDriven.Application.Features.Categories.Command.DeleteCategory
             await unitOfWork.GetWriteRepository<Category>().UpdateAsync(category);
 
             await unitOfWork.SaveAsync();
+
+            return Unit.Value;
         }
     }
 }

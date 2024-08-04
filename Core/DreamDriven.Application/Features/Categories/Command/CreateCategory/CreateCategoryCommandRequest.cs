@@ -2,7 +2,7 @@
 
 namespace DreamDriven.Application.Features.Categories.Command.CreateCategory
 {
-    public class CreateCategoryCommandRequest : IRequest
+    public class CreateCategoryCommandRequest : IRequest<Unit>
     {
         //Category olusturulurken ihtiyacim olan alanlar
         public string Name { get; set; }
