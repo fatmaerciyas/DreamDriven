@@ -20,15 +20,15 @@ namespace DreamDriven.Application.Features.Categories.Command.UpdateCategory
         {
             var category = await unitOfWork.GetReadRepository<Category>().GetAsync(x => x.Id == request.Id && !x.IsDeleted);
 
-            var map = mapper.Map<Category, UpdateCategoryCommandRequest>(category);
+            //var map = mapper.Map<Category, UpdateCategoryCommandRequest>(category);
 
-            var categoryVisuals = await unitOfWork.GetReadRepository<CategoryVisual>()
-                .GetAllAsync(x => x.CategoryId == category.Id);
+            //var categoryVisuals = await unitOfWork.GetReadRepository<CategoryVisual>()
+            //      .GetAllAsync(x => x.CategoryId == category.Id);
 
-            await unitOfWork.GetWriteRepository<CategoryVisual>().HardDeleteRangeAsync(categoryVisuals);
+            //await unitOfWork.GetWriteRepository<CategoryVisual>().HardDeleteRangeAsync(categoryVisuals);
 
 
-            await unitOfWork.GetWriteRepository<Category>().UpdateAsync(map);
+            await unitOfWork.GetWriteRepository<Category>().UpdateAsync(category); //map update edilmeli
             await unitOfWork.SaveAsync();
 
             return Unit.Value;

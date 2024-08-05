@@ -1,5 +1,6 @@
 ﻿using DreamDriven.Application.Interfaces.UnitOfWorks;
 using DreamDriven.Application.Repositories;
+using DreamDriven.Domain.Entities;
 using DreamDriven.Persistance.Context;
 using DreamDriven.Persistance.Repositories;
 using DreamDriven.Persistance.UnitOfWorks;
@@ -20,6 +21,20 @@ namespace DreamDriven.Persistance
                 services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
                 services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+                services.AddIdentityCore<User>(opt =>
+                {
+                    opt.Password.RequireNonAlphanumeric = false;
+                    opt.Password.RequiredLength = 2;
+                    opt.Password.RequireLowercase = false;
+                    opt.Password.RequireUppercase = false;
+                    opt.Password.RequireDigit = false;
+                    opt.SignIn.RequireConfirmedEmail = false;
+
+
+                })
+                .AddRoles<Role>()
+                .AddEntityFrameworkStores<AppDbContext>();
             });
         }
     }
