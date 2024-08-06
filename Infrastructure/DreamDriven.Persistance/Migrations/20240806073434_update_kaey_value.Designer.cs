@@ -3,6 +3,7 @@ using System;
 using DreamDriven.Persistance.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DreamDriven.Persistance.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240806073434_update_kaey_value")]
+    partial class update_kaey_value
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,35 +25,7 @@ namespace DreamDriven.Persistance.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("DreamDriven.Domain.Entities.BackgroundImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("Updated_At")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("BackgroundImages");
-                });
-
-            modelBuilder.Entity("DreamDriven.Domain.Entities.Category", b =>
+            modelBuilder.Entity("DreamDriven.Domain.Common.EntityBase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,109 +36,18 @@ namespace DreamDriven.Persistance.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Updated_at")
-                        .HasColumnType("timestamp with time zone");
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
-                });
+                    b.ToTable("EntityBase");
 
-            modelBuilder.Entity("DreamDriven.Domain.Entities.Counter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("EntityBase");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Updated_at")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Counters");
-                });
-
-            modelBuilder.Entity("DreamDriven.Domain.Entities.CounterLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CounterId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<TimeSpan?>("Duration")
-                        .HasColumnType("interval");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CounterId");
-
-                    b.ToTable("CounterLogs");
-                });
-
-            modelBuilder.Entity("DreamDriven.Domain.Entities.Notificatin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Is_Read")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MessageDetail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notificatins");
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("DreamDriven.Domain.Entities.Role", b =>
@@ -191,44 +75,6 @@ namespace DreamDriven.Persistance.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("DreamDriven.Domain.Entities.Todo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DueDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Todos");
                 });
 
             modelBuilder.Entity("DreamDriven.Domain.Entities.User", b =>
@@ -304,31 +150,6 @@ namespace DreamDriven.Persistance.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("DreamDriven.Domain.Entities.UserUpload", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FileUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserUploads");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -436,6 +257,228 @@ namespace DreamDriven.Persistance.Migrations
 
             modelBuilder.Entity("DreamDriven.Domain.Entities.BackgroundImage", b =>
                 {
+                    b.HasBaseType("DreamDriven.Domain.Common.EntityBase");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Updated_At")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasDiscriminator().HasValue("BackgroundImage");
+                });
+
+            modelBuilder.Entity("DreamDriven.Domain.Entities.Category", b =>
+                {
+                    b.HasBaseType("DreamDriven.Domain.Common.EntityBase");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Updated_at")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasDiscriminator().HasValue("Category");
+                });
+
+            modelBuilder.Entity("DreamDriven.Domain.Entities.Counter", b =>
+                {
+                    b.HasBaseType("DreamDriven.Domain.Common.EntityBase");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Updated_at")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EntityBase", t =>
+                        {
+                            t.Property("Name")
+                                .HasColumnName("Counter_Name");
+
+                            t.Property("Updated_at")
+                                .HasColumnName("Counter_Updated_at");
+                        });
+
+                    b.HasDiscriminator().HasValue("Counter");
+                });
+
+            modelBuilder.Entity("DreamDriven.Domain.Entities.CounterLog", b =>
+                {
+                    b.HasBaseType("DreamDriven.Domain.Common.EntityBase");
+
+                    b.Property<int>("CounterId")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeSpan?>("Duration")
+                        .HasColumnType("interval");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasIndex("CounterId");
+
+                    b.HasDiscriminator().HasValue("CounterLog");
+                });
+
+            modelBuilder.Entity("DreamDriven.Domain.Entities.Notificatin", b =>
+                {
+                    b.HasBaseType("DreamDriven.Domain.Common.EntityBase");
+
+                    b.Property<bool>("Is_Read")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MessageDetail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EntityBase", t =>
+                        {
+                            t.Property("UserId")
+                                .HasColumnName("Notificatin_UserId");
+                        });
+
+                    b.HasDiscriminator().HasValue("Notificatin");
+                });
+
+            modelBuilder.Entity("DreamDriven.Domain.Entities.Todo", b =>
+                {
+                    b.HasBaseType("DreamDriven.Domain.Common.EntityBase");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EntityBase", t =>
+                        {
+                            t.Property("UserId")
+                                .HasColumnName("Todo_UserId");
+                        });
+
+                    b.HasDiscriminator().HasValue("Todo");
+                });
+
+            modelBuilder.Entity("DreamDriven.Domain.Entities.UserUpload", b =>
+                {
+                    b.HasBaseType("DreamDriven.Domain.Common.EntityBase");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EntityBase", t =>
+                        {
+                            t.Property("UserId")
+                                .HasColumnName("UserUpload_UserId");
+                        });
+
+                    b.HasDiscriminator().HasValue("UserUpload");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("DreamDriven.Domain.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("DreamDriven.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("DreamDriven.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("DreamDriven.Domain.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DreamDriven.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("DreamDriven.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DreamDriven.Domain.Entities.BackgroundImage", b =>
+                {
                     b.HasOne("DreamDriven.Domain.Entities.Category", "Category")
                         .WithMany("BackgroundImages")
                         .HasForeignKey("CategoryId")
@@ -500,62 +543,6 @@ namespace DreamDriven.Persistance.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.HasOne("DreamDriven.Domain.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
-                {
-                    b.HasOne("DreamDriven.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-                {
-                    b.HasOne("DreamDriven.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("DreamDriven.Domain.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DreamDriven.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-                {
-                    b.HasOne("DreamDriven.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DreamDriven.Domain.Entities.Category", b =>
-                {
-                    b.Navigation("BackgroundImages");
-                });
-
             modelBuilder.Entity("DreamDriven.Domain.Entities.User", b =>
                 {
                     b.Navigation("Counters");
@@ -565,6 +552,11 @@ namespace DreamDriven.Persistance.Migrations
                     b.Navigation("Todos");
 
                     b.Navigation("UserUploads");
+                });
+
+            modelBuilder.Entity("DreamDriven.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("BackgroundImages");
                 });
 #pragma warning restore 612, 618
         }

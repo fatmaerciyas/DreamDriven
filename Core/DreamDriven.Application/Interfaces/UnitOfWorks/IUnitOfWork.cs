@@ -8,7 +8,7 @@ namespace DreamDriven.Application.Interfaces.UnitOfWorks
         IReadRepository<T> GetReadRepository<T>() where T : class, IEntityBase, new();
         IWriteRepository<T> GetWriteRepository<T>() where T : class, IEntityBase, new();
 
-        Task<int> SaveAsync();
+        Task<int> SaveAsync(CancellationToken cancellationToken);
         int Save(); //asenkron olmayan save islemleri icin
     }
 }

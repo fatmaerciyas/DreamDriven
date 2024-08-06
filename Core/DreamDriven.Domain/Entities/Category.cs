@@ -9,17 +9,18 @@ namespace DreamDriven.Domain.Entities
 
         }
 
-        public Category(string name, string description, DateTime updated_at)
+        public Category(string name, DateTime updated_at, bool isDeleted)
         {
             Name = name;
-            Description = description;
             Updated_at = updated_at;
+            IsDeleted = isDeleted;
 
         }
 
         public string Name { get; set; }
-        public string Description { get; set; }
         public DateTime Updated_at { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
 
         //BackgroundImages
         public ICollection<BackgroundImage> BackgroundImages { get; set; }

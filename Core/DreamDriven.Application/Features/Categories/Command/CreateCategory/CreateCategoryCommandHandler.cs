@@ -18,35 +18,22 @@ namespace DreamDriven.Application.Features.Categories.Command.CreateCategory
 
         public async Task<Unit> Handle(CreateCategoryCommandRequest request, CancellationToken cancellationToken)
         {
-
+            // Tüm kategorileri al
             IList<Category> categories = await unitOfWork.GetReadRepository<Category>().GetAllAsync();
 
-            //if ( categories.Any(x => x.Name == request.Name) )
-            //    throw new Exception("The category with this name already exists ");
-
+            // Kategori adının benzersiz olması gerektiğini doğrula
             await categoryRules.CategoryNameMustNotBeSame(categories, request.Name);
 
-            foreach ( var item in categories )
-            {
-                if ( item.Name == request.Name ) { }
-            }
+            // Yeni kategori oluştur
+            Category category = new Category(request.Name, request.Updated_At, false);
 
-            Category category = new Category(request.Name);
-
+            // Yeni kategoriyi ekle
             await unitOfWork.GetWriteRepository<Category>().AddAsync(category);
 
-            if ( await unitOfWork.SaveAsync() > 0 )
-            {
-                //await unitOfWork.GetWriteRepository<CategoryVisual>().AddAsync(new()
-                //{
+            // Değişiklikleri kaydet
+            await unitOfWork.SaveAsync(cancellationToken);
 
-                //    // ?
-                //});
-
-                await unitOfWork.SaveAsync();
-            }
-
-            //Bos donmemizi sagliyor pipelinein dogru calismasi icin
+            // Bos dönmemizi saglıyoruz; pipeline'ın doğru çalışması için
             return Unit.Value;
         }
     }

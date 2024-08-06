@@ -1,5 +1,4 @@
-﻿using DreamDriven.Application.Interfaces.AutoMapper;
-using DreamDriven.Application.Interfaces.UnitOfWorks;
+﻿using DreamDriven.Application.Interfaces.UnitOfWorks;
 using DreamDriven.Domain.Entities;
 using MediatR;
 
@@ -8,29 +7,40 @@ namespace DreamDriven.Application.Features.Categories.Command.UpdateCategory
     public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommandRequest, Unit>
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
 
-        public UpdateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        // Constructor: IUnitOfWork nesnesini alır ve sınıfın private alanına atar
+        public UpdateCategoryCommandHandler(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateCategoryCommandRequest request, CancellationToken cancellationToken)
         {
-            var category = await unitOfWork.GetReadRepository<Category>().GetAsync(x => x.Id == request.Id && !x.IsDeleted);
+            // Belirtilen ID'ye sahip ve silinmemiş kategoriyi al
+            var category = await unitOfWork.GetReadRepository<Category>().GetAsync(
+                x => x.Id == request.Id && !x.IsDeleted
+            );
 
-            //var map = mapper.Map<Category, UpdateCategoryCommandRequest>(category);
+            // Kategori mevcut değilse, bir hata fırlatabiliriz ya da uygun bir işlem yapabiliriz
+            if ( category == null )
+            {
+                // Bu kısımda kategori bulunamazsa yapılacak işlemi belirlemelisiniz.
+                // Örneğin, bir istisna fırlatabilirsiniz veya bir hata mesajı dönebilirsiniz.
+                throw new KeyNotFoundException("There is no such a category");
+            }
 
-            //var categoryVisuals = await unitOfWork.GetReadRepository<CategoryVisual>()
-            //      .GetAllAsync(x => x.CategoryId == category.Id);
+            // Kategori üzerinde güncelleme yap
+            // Güncellenmiş ad ve tarihleri kullanarak kategori nesnesini güncelle
+            category.Name = request.Name;
+            category.Updated_at = DateTime.Now;
 
-            //await unitOfWork.GetWriteRepository<CategoryVisual>().HardDeleteRangeAsync(categoryVisuals);
+            // Kategoriyi güncelle
+            await unitOfWork.GetWriteRepository<Category>().UpdateAsync(category);
 
+            // Değişiklikleri veritabanına kaydet
+            await unitOfWork.SaveAsync(cancellationToken = default);
 
-            await unitOfWork.GetWriteRepository<Category>().UpdateAsync(category); //map update edilmeli
-            await unitOfWork.SaveAsync();
-
+            // İşlem tamamlandığında boş döner; MediatR kullanımı için
             return Unit.Value;
         }
     }

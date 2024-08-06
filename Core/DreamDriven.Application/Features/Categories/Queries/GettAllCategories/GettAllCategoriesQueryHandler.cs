@@ -23,7 +23,7 @@ namespace DreamDriven.Application.Features.Categories.Queries.GettAllCategories
             var categories = await unitOfWork.GetReadRepository<Category>().GetAllAsync(); //include: x => x.Include(b => b.Visuals)
 
 
-            //MAPPİNG
+            //mapping
             var map = mapper.Map<GettAllCategoriesQueryResponse, Category>(categories);
             return map;
 

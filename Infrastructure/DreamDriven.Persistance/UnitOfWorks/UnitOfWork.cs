@@ -22,6 +22,10 @@ namespace DreamDriven.Persistance.UnitOfWorks
 
         public async Task<int> SaveAsync() => await _context.SaveChangesAsync();
 
+        //Entity Framework Core'dan gelen ve veritabanındaki değişiklikleri asenkron olarak kaydeden bir metottur cancellationToken, uzun süren işlemlerin iptal edilmesini sağlar
+        public async Task<int> SaveAsync(CancellationToken cancellationToken = default)
+           => await _context.SaveChangesAsync(cancellationToken);
+
         // Hangi ReadRepository'ye aitse oraya gonder
         IReadRepository<T> IUnitOfWork.GetReadRepository<T>() => new ReadRepository<T>(_context);
 

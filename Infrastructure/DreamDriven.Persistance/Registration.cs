@@ -17,26 +17,25 @@ namespace DreamDriven.Persistance
             services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-
-                services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
-                services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
-                services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-                services.AddIdentityCore<User>(opt =>
-                {
-                    opt.Password.RequireNonAlphanumeric = false;
-                    opt.Password.RequiredLength = 2;
-                    opt.Password.RequireLowercase = false;
-                    opt.Password.RequireUppercase = false;
-                    opt.Password.RequireDigit = false;
-                    opt.SignIn.RequireConfirmedEmail = false;
-
-
-                })
-                .AddRoles<Role>()
-                .AddEntityFrameworkStores<AppDbContext>();
             });
+
+            // Scoped bağımlılıkları ekle
+            services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+            services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Identity yapılandırması
+            services.AddIdentityCore<User>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequiredLength = 2;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = false;
+                opt.SignIn.RequireConfirmedEmail = false;
+            })
+            .AddRoles<Role>()
+            .AddEntityFrameworkStores<AppDbContext>();
         }
     }
 }
-

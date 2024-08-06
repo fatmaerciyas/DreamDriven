@@ -8,20 +8,33 @@ namespace DreamDriven.Domain.Entities
         {
         }
 
-        public BackgroundImage(string url, DateTime updated_date, int categoryId)
+        public BackgroundImage(string fileName, string filePath, bool is_deleted, long fileSize, DateTime uploadedAt, int categoryId, int userId)
         {
-            Updated_Date = updated_date;
+            FileName = fileName;
+            FilePath = filePath;
+            FileSize = fileSize;
+            UploadedAt = uploadedAt;
             CategoryId = categoryId;
-            Url = url;
+            UserId = userId;
+            IsDeleted = is_deleted;
         }
 
-        public string Url { get; set; }
-        public DateTime Updated_At { get; set; }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public long FileSize { get; set; }
+        public DateTime UploadedAt { get; set; } = DateTime.Now;
+        public bool IsDeleted { get; set; }
+
 
         //Category
-        public int Category_Id { get; set; }
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
-        public DateTime Updated_Date { get; }
-        public int CategoryId { get; }
+
+        //User
+        public int UserId { get; set; }
+        public User User { get; set; }
+
+
+
     }
 }

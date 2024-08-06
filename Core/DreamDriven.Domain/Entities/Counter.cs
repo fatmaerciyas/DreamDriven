@@ -8,19 +8,17 @@ namespace DreamDriven.Domain.Entities
         {
         }
 
-        public Counter(string name, string description, DateTime updated_at, Guid userId)
+        public Counter(DateTime updated_at, Guid userId, bool is_deleted)
         {
-            Name = name;
-            Description = description;
             Updated_at = updated_at;
             UserId = userId;
+            IsDeleted = is_deleted;
 
         }
 
 
-        public string Name { get; set; }
-        public string Description { get; set; }
         public DateTime Updated_at { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         //User
         public Guid UserId { get; set; }
