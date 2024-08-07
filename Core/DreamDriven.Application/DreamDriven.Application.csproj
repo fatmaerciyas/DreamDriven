@@ -16,12 +16,7 @@
     <PackageReference Include="MediatR" Version="12.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="SendGrid" Version="9.29.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\CounterLog\Command\DeleteCounterLog\" />
-    <Folder Include="Features\CounterLog\Command\UpdateCounterLog\" />
-    <Folder Include="Features\CounterLog\Queries\" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
   </ItemGroup>
 
 </Project>

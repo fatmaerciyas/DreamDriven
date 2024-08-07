@@ -2,23 +2,27 @@
 
 namespace DreamDriven.Domain.Entities
 {
-    public class Notificatin : EntityBase
+    public class Notification : EntityBase
     {
-        public Notificatin()
+        public Notification()
         {
         }
 
-        public Notificatin(string message, string messageDetail, bool is_Read, Guid userId)
+        public Notification(string message, string messageDetail, bool is_Read, Guid userId, bool isDeleted = false)
         {
             Message = message;
             MessageDetail = messageDetail;
             Is_Read = is_Read;
             UserId = userId;
+            IsDeleted = isDeleted;
+            IsDeleted = isDeleted;
         }
 
         public string Message { get; set; }
         public string MessageDetail { get; set; }
         public bool Is_Read { get; set; }
+        public bool IsDeleted { get; set; }
+
 
         //User
         public Guid UserId { get; set; }

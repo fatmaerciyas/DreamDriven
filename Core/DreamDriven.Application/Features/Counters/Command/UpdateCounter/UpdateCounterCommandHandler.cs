@@ -30,6 +30,9 @@ namespace DreamDriven.Application.Features.Counters.Command.UpdateCounter
 
             // Counter'ı güncelle
             counter.Updated_at = request.Updated_at;
+            counter.Duration = request.Duration;
+            counter.IsDeleted = request.IsDeleted;
+            counter.Updated_at = request.Updated_at;
 
 
             await unitOfWork.GetWriteRepository<Counter>().UpdateAsync(counter);

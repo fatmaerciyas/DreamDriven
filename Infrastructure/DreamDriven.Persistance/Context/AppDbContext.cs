@@ -15,8 +15,7 @@ namespace DreamDriven.Persistance.Context
         public DbSet<BackgroundImage> BackgroundImages { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Counter> Counters { get; set; }
-        public DbSet<CounterLog> CounterLogs { get; set; }
-        public DbSet<Notificatin> Notificatins { get; set; }
+        public DbSet<Notification> Notificatins { get; set; }
         public DbSet<Todo> Todos { get; set; }
         public DbSet<UserUpload> UserUploads { get; set; }
 

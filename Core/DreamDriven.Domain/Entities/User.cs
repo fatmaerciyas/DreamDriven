@@ -10,7 +10,7 @@ namespace DreamDriven.Domain.Entities
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
         //Notifications
-        public ICollection<Notificatin> Notifications { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
         //Todos
         public ICollection<Todo> Todos { get; set; }
         //UserUploads

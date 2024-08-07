@@ -18,7 +18,7 @@ namespace DreamDriven.Application.Features.Counters.Command.CreateCounter
             Guid newGuid = Guid.NewGuid();
 
             //Yeni counter olustur
-            Counter counter = new Counter(request.Updated_at, newGuid, false); //userId daha sonra giris yapan kullanicinin Id'si olarak degisecek
+            Counter counter = new Counter(DateTime.Now, request.EndTime, request.Duration, false, newGuid); //userId daha sonra giris yapan kullanicinin Id'si olarak degisecek
 
             //Yeni counter'i ekle
             await unitOfWork.GetWriteRepository<Counter>().AddAsync(counter);
