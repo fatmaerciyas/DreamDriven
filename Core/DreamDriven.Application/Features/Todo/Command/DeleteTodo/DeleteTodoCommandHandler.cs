@@ -1,14 +1,17 @@
-﻿using DreamDriven.Application.Interfaces.UnitOfWorks;
+﻿using DreamDriven.Application.Bases;
+using DreamDriven.Application.Interfaces.AutoMapper;
+using DreamDriven.Application.Interfaces.UnitOfWorks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace DreamDriven.Application.Features.Todo.Command.DeleteTodo
 {
-    public class DeleteTodoCommandHandler : IRequestHandler<DeleteTodoCommandRequest, Unit>
+    public class DeleteTodoCommandHandler : BaseHandler, IRequestHandler<DeleteTodoCommandRequest, Unit>
     {
         private readonly IUnitOfWork unitOfWork;
 
         // Constructor: IUnitOfWork nesnesini alır ve sınıfın private alanına atar
-        public DeleteTodoCommandHandler(IUnitOfWork unitOfWork)
+        public DeleteTodoCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor) : base(mapper, unitOfWork, httpContextAccessor)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }

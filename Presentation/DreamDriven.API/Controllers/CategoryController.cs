@@ -3,10 +3,12 @@ using DreamDriven.Application.Features.Categories.Command.DeleteFolder;
 using DreamDriven.Application.Features.Categories.Command.UpdateCategory;
 using DreamDriven.Application.Features.Categories.Queries.GettAllCategories;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DreamDriven.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class CategoryController : ControllerBase

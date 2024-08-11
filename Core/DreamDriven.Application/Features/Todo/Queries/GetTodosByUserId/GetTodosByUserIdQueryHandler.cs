@@ -1,15 +1,17 @@
-﻿using DreamDriven.Application.Interfaces.AutoMapper;
+﻿using DreamDriven.Application.Bases;
+using DreamDriven.Application.Interfaces.AutoMapper;
 using DreamDriven.Application.Interfaces.UnitOfWorks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace DreamDriven.Application.Features.Todo.Queries.GetTodosByUserId
 {
-    public class GetTodosByUserIdQueryHandler : IRequestHandler<GetTodosByUserIdQueryRequest, IList<GetTodosByUserIdQueryResponse>>
+    public class GetTodosByUserIdQueryHandler : BaseHandler, IRequestHandler<GetTodosByUserIdQueryRequest, IList<GetTodosByUserIdQueryResponse>>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public GetTodosByUserIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetTodosByUserIdQueryHandler(IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor) : base(mapper, unitOfWork, httpContextAccessor)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;

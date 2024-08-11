@@ -1,14 +1,17 @@
-﻿using DreamDriven.Application.Interfaces.UnitOfWorks;
+﻿using DreamDriven.Application.Bases;
+using DreamDriven.Application.Interfaces.AutoMapper;
+using DreamDriven.Application.Interfaces.UnitOfWorks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace DreamDriven.Application.Features.Todo.Command.UpdateTodo
 {
-    public class UpdateTodoCommandHandler : IRequestHandler<UpdateTodoCommandRequest, Unit>
+    public class UpdateTodoCommandHandler : BaseHandler, IRequestHandler<UpdateTodoCommandRequest, Unit>
     {
         private readonly IUnitOfWork unitOfWork;
 
         // Constructor: IUnitOfWork nesnesini alır ve sınıfın private alanına atar
-        public UpdateTodoCommandHandler(IUnitOfWork unitOfWork)
+        public UpdateTodoCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor) : base(mapper, unitOfWork, httpContextAccessor)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }

@@ -1,19 +1,22 @@
-﻿using DreamDriven.Application.Interfaces.UnitOfWorks;
+﻿using DreamDriven.Application.Bases;
+using DreamDriven.Application.Interfaces.AutoMapper;
+using DreamDriven.Application.Interfaces.UnitOfWorks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace DreamDriven.Application.Features.Todo.Command.CreateTodo
 {
-    public class CreateTodoCommandHandler : IRequestHandler<CreateTodoCommandRequest, Unit>
+    public class CreateTodoCommandHandler : BaseHandler, IRequestHandler<CreateTodoCommandRequest, Unit>
     {
-        private readonly IUnitOfWork unitOfWork;
 
-        public CreateTodoCommandHandler(IUnitOfWork unitOfWork)
+
+        public CreateTodoCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor) : base(mapper, unitOfWork, httpContextAccessor)
         {
-            this.unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(CreateTodoCommandRequest request, CancellationToken cancellationToken)
         {
+
             // Yeni Todo nesnesi oluşturma
             var todo = new Domain.Entities.Todo(
                 title: request.Title,
